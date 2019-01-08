@@ -1,13 +1,11 @@
-// F. Borando, M. Garbellini
+// F. Borando - francesco.borando@studenti.unimi.it
+// M. Garbellini - matteo.garbellini@studenti.unimi.it
 // Università degli Studi di Milano
 // Dept. of Physics
-// 
+// January 2019
 //
 // GRAVITATIONAL N-BODY SIMULATION
-// Task: Physics
-// Sub-Task: Treecode
-// latest working build, Jan 6th 2019
-
+// tree.hpp: 
 
 #ifndef TREE_FOR_N_BODY_SIMULATION
 #define TREE_FOR_N_BODY_SIMULATION
