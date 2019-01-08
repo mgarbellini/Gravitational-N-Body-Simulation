@@ -1,92 +1,55 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
-{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;\f2\fnil\fcharset0 Menlo-Bold;
-}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
-{\*\expandedcolortbl;;\csgray\c0\c0;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh15180\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-
-\f0\fs36 \cf0 F. Borando - francesco.borando@studenti.unimi.it\
+F. Borando - francesco.borando@studenti.unimi.it\
 M. Garbellini - matteo.garbellini@studenti.unimi.it\
-Universit\'e0 degli Studi di Milano
-\f1 \
+Universita' degli Studi di Milano
+Dept. of Physics
+January 2019
 
-\f0 Dept. of Physics
-\f1 \
-
-\f0 January 2019
-\f1 \
-\
-
-\f2\b GRAVITATIONAL N-BODY SIMULATION
-\f1\b0 \
-
-\f0 \
-
-\f2\b 1. Introduction\
-2. Numerical methods\
-3. Technical remarks\
-	3.1 Softening\
-	3.2 Normalization\
-4. Package description - how to use it\
-	4.1 \'93simulators\'94 directory\
-	4.2 \'93graphics\'94 directory\
-	4.3 \'93tools\'94 directory\
+GRAVITATIONAL N-BODY SIMULATION
+1. Introduction
+2. Numerical methods
+3. Technical remarks
+	3.1 Softening
+	3.2 Normalization
+4. Package description - how to use it
+	4.1 'simulators' directory
+	4.2 'graphics' directory
+	4.3 'tools' directory
 5. Requirements
-\f0\b0 \
+6. How to build the code
 
-\f2\b 6. How to build the code
-\f0\b0 \
-\
 
-\f2\b 1. Introduction
-\f0\b0 \
-\
-This package provides a software that can perform different physical simulations of a three dimensional classical N-body problem, collisionless, where the N bodies interact with Newtons\'92 law of universal gravitation.\
-The code implements the algorithm firstly proposed by Barnes and Hut (1986) that reduces the complexity of force calculation to O(N log N) by using a tree-structured hierarchical division of space and approximating body clusters with a cluster-center-of-mass when a certain criterion is satisfied - \cb2 See J. Barnes & P. Hut (December 1986). "A hierarchical O(N log N) force-calculation algorithm". Nature. 324 (4): 446\'96449. \
-The package provides code of different simulators, a small package of tools for energy and data analysis and a graphical tool to visualize the results of the simulation using OpenGL.\
-\cb1 \
+1. Introduction
+This package provides a software that can perform different physical simulations of a three dimensional classical N-body problem, collisionless, where the N bodies interact with Newtons law of universal gravitation.
+The code implements the algorithm firstly proposed by Barnes and Hut (1986) that reduces the complexity of force calculation to O(N log N) by using a tree-structured hierarchical division of space and approximating body 
+clusters with a cluster-center-of-mass when a certain criterion is satisfied -  See J. Barnes & P. Hut (December 1986). "A hierarchical O(N log N) force-calculation algorithm". Nature. 324 (4): 446'
+The package provides code of different simulators, a small package of tools for energy and data analysis and a graphical tool to visualize the results of the simulation using OpenGL.
 
-\f2\b 2. Numerical methods
-\f0\b0 \
-\
+2. Numerical methods
 Computational results are obtained by different numerical methods:\
-\
-\'95 Leapfrog - O(h^3), symplectic \
-\'95 Runge-Kutta - O(h^5)\
-\
+- Leapfrog - O(h^3), symplectic 
+- Runge-Kutta - O(h^5)\
+
 where h is the time-increment value (or timestep). For each method a different simulator is provided.\
-The Leapfrog method was adopted in a non-standard form which preserves symplecticity and O(h^3) order - For a description of this alternative method see http://www.artcompsci.org/vol_1/v1_web/node34.html . \
-Following Bodenheim&others (December 2006),\'93Numerical methods in Astrophysics\'94 Ch.3, par.3.7 we suggest to use the Leapfrog method for a simulation concerning a vast number of bodies (>10^4). To simulate smaller systems we recommend the use of Runge-Kutta algorithm, where the computational effort can still be handled easily by modern calculators.\
-\
+The Leapfrog method was adopted in a non-standard form which preserves symplecticity and O(h^3) order - For a description of this alternative method see http://www.artcompsci.org/vol_1/v1_web/node34.html . 
+Following Bodenheim&others (December 2006), 'Numerical methods in Astrophysics' Ch.3, par.3.7 we suggest to use the Leapfrog method for a simulation concerning a vast number of bodies (>10^4). 
+To simulate smaller systems we recommend the use of Runge-Kutta algorithm, where the computational effort can still be handled easily by modern calculators.
 
-\f2\b 3. Technical remarks
-\f0\b0 \
-\
 
-\f2\b 3.1 Softening\
+3. Technical remarks
 
-\f0\b0 \
-In this code the classic softening trick to avoid exaggerated force with close bodies encounters is provided - for a physical discussion see W. Dehnen (November 2000), \'93Towards optimal softening in 3D N-body codes\'94.\
-Following previous paper and by the results of our own tests the standard softening length provided in the code was chosen with an epsilon value of 0.025.\
-\
+3.1 Softening
+In this code the classic softening trick to avoid exaggerated force with close bodies encounters is provided - for a physical discussion see W. Dehnen (November 2000), 'Towards optimal softening in 3D N-body codes'.
+Following previous paper and by the results of our own tests the standard softening length provided in the code was chosen with an epsilon value of 0.025.
 
-\f2\b 3.2 Normalization\
+3.2 Normalization
+The value of the universal gravitational constant G is normalized to the value of 1, following the standard for numerical astrophysical simulations. Be aware that time units could also need to be rescaled depending on the context of the dynamical system. 
 
-\f0\b0 \
-The value of the universal gravitational constant G is normalized to the value of 1, following the standard for numerical astrophysical simulations. Be aware that time units could also need to be rescaled depending on the context of the dynamical system. \
-\
+4. Package description - how to use it
 
-\f2\b 4. Package description - how to use it
-\f0\b0 \
-\
-
-\f2\b 4.1 \'93simulators\'94 directory\
-
-\f0\b0 \
-This directory provides code for both methods described in section 2 of this file.\
-A simulator that records potential and kinetic energy is also provided for both methods - it can be useful for checking how well the simulation conserved the energy.\
-The lines of the input-file (first argument for the simulators) must be of this format: \
+4.1 'simulators' directory
+This directory provides code for both methods described in section 2 of this file.
+A simulator that records potential and kinetic energy is also provided for both methods - it can be useful for checking how well the simulation conserved the energy.
+The lines of the input-file (first argument for the simulators) must be of this format: 
 \
 mass_of_the_body (tab) initial_x_position (tab) initial_y_position (tab) initial_z_position (tab) initial_x_velocity (tab) initial_y_velocity (tab) initial_z_velocity\
 \
