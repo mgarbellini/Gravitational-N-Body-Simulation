@@ -1,3 +1,12 @@
+// F. Borando - francesco.borando@studenti.unimi.it
+// M. Garbellini - matteo.garbellini@studenti.unimi.it
+// Università degli Studi di Milano
+// Dept. of Physics
+// January 2019
+//
+// GRAVITATIONAL N-BODY SIMULATION
+// Using tree method with RK algorithm
+
 #include <iostream>
 #include <fstream>
 #include <vector>
