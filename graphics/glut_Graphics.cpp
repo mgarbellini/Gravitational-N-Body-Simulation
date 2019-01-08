@@ -1,12 +1,11 @@
-// F. Borando, M. Garbellini
+// F. Borando - francesco.borando@studenti.unimi.it
+// M. Garbellini - matteo.garbellini@studenti.unimi.it
 // Università degli Studi di Milano
 // Dept. of Physics
-// 
+// January 2019
 //
 // GRAVITATIONAL N-BODY SIMULATION
-// Task: Graphics
-// Sub-Task: 3D/OpenGL
-// latest working build, Jan 7th 2019
+// Graphics for simulation visualization
 
 #include <iostream>
 #include <vector>
