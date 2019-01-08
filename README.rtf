@@ -10,6 +10,7 @@ GRAVITATIONAL N-BODY SIMULATION
 3. Technical remarks
 	3.1 Softening
 	3.2 Normalization
+	3.3 Barnes-Hut Conditions
 4. Package description - how to use it
 	4.1 'simulators' directory
 	4.2 'graphics' directory
@@ -24,6 +25,7 @@ This package provides a software that can perform different physical simulations
 The code implements the algorithm firstly proposed by Barnes and Hut (1986) that reduces the complexity of force calculation to O(N log N) by using a tree-structured hierarchical division of space and approximating body 
 clusters with a cluster-center-of-mass when a certain criterion is satisfied -  See J. Barnes & P. Hut (December 1986). "A hierarchical O(N log N) force-calculation algorithm". Nature. 324 (4): 446'
 The package provides code of different simulators, a small package of tools for energy and data analysis and a graphical tool to visualize the results of the simulation using OpenGL.
+
 
 2. NUMERICAL METHODS
 Computational results are obtained by different numerical methods:
@@ -44,6 +46,10 @@ Following previous paper and by the results of our own tests the standard soften
 
 3.2 Normalization
 The value of the universal gravitational constant G is normalized to the value of 1, following the standard for numerical astrophysical simulations. Be aware that time units could also need to be rescaled depending on the context of the dynamical system. 
+
+3.3 Barnes-Hut Conditions
+According to Barnes-Hut (1986), the so called Barnes-Hut condition was set to 0.5
+
 
 4. PACKAGE DESCRIPTION - how to use it
 
@@ -101,6 +107,7 @@ The file dispersion.cpp prints the dispersion of the energy of a file obtained v
 
 4.4 'initial conditions' directory 
 In this directory some initial conditions in the proper format for the simulation are provided. 
+
 
 5. REQUIREMENTS
 glew 
