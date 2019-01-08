@@ -14,50 +14,48 @@
 #include <sstream> 			//Managing precision from float to string std::to_string
 #include <iomanip>
 #include <cmath>
-#include <GL/glew.h>		//OpenGL library
-#include <GL/freeglut.h>	//OpenGL library
-#include <glm/glm.hpp>		//Mathematical library for matrices and transformations
+#include <GL/glew.h>			//OpenGL library
+#include <GL/freeglut.h>		//OpenGL library
+#include <glm/glm.hpp>			//Mathematical library for matrices and transformations
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "glutBody.hpp"		//Custom made class for better handling of glutBodies
+#include "glutBody.hpp"			//Custom made class for better handling of glutBodies
 
 //* * * G L O B A L  D E C L A R A T I O N * * * * * * 
 
-	std::vector<glutBody> glut_bodies;	//All-bodies-all-iterations vector
+	std::vector<glutBody> glut_bodies;		//All-bodies-all-iterations vector
 	std::ifstream input;				//Input file definition
-	int N;								//Number of bodies
-	float timestep;						//Computational timestep
-	int iter=0;							//Number of animation iterations (i.e. frames)
-	int iterations=0;					//Number of computational iterations*bodies
-	float rotateX = 0;					//Value of rotation around X-axis
-	float rotateZ = 0;					//Value of rotation around Z-axis
-	float scale = 1 ;					//Scaling factor (default = 1)
-	const float scale_value = 0.3;		//Scaling factor increment 
-	float max=0;						//Max between x,y,z coordinates (calculated for first 3 iter)
+	int N;						//Number of bodies
+	float timestep;					//Computational timestep
+	int iter=0;					//Number of animation iterations (i.e. frames)
+	int iterations=0;				//Number of computational iterations*bodies
+	float rotateX = 0;				//Value of rotation around X-axis
+	float rotateZ = 0;				//Value of rotation around Z-axis
+	float scale = 1 ;				//Scaling factor (default = 1)
+	const float scale_value = 0.3;			//Scaling factor increment 
+	float max=0;					//Max between x,y,z coordinates (calculated for first 3 iter)
 	float point_size = 1;				//Point size (variable) to allow better viewing
-	const float pnt_size_var = 0.2; 	//Point size variation value
-	int FPS;							//Value of Frame-Per-Second (default 30fps)
+	const float pnt_size_var = 0.2; 		//Point size variation value
+	int FPS;					//Value of Frame-Per-Second (default 30fps)
 	const float FPS_var = 15;			//Value of Frame-Per-Second variation (suggested 15)
-	int animating = 0;					//Bool value for animation on and off
-	int reverse = 0;					//Bool value for reverse playback 
+	int animating = 0;				//Bool value for animation on and off
+	int reverse = 0;				//Bool value for reverse playback 
 	int is_fullscreen = 0;				//Bool value for full screen mode
 	int key_informations = 1;			//Bool value for key_informations on screen
 	int key_acknowledgment = 1;			//Bool value for acknowledgment on screen
 
 	//TEXT DECLARATIONS
 	//simulations parameters
-	std::string 	text_title,
-					text_iter, text_iter_elapsed, 
-					text_time, text_time_elapsed, 
-					text_bodies, text_bodies_number;
+	std::string	text_title,text_iter, text_iter_elapsed, 
+			text_time, text_time_elapsed, text_bodies, text_bodies_number;
 	//key_informations
-	std::string key_F1, key_F2, key_F3, key_F4, 
-				key_F5, key_F6, key_F11, key_F12,
-				key_UP_DOWN, key_LEFT_RIGHT, key_full,
-				key_EXIT, key_SPACE, key_info, key_ack;
+	std::string 	key_F1, key_F2, key_F3, key_F4, 
+			key_F5, key_F6, key_F11, key_F12,
+			key_UP_DOWN, key_LEFT_RIGHT, key_full,
+			key_EXIT, key_SPACE, key_info, key_ack;
+	
 	//acknowledgments
-	std::string ack_name, ack_affil, ack_dept;
-
+	std::string 	ack_name, ack_affil, ack_dept;
 
 //* * * End of G L O B A L  D E C L A R A T I O N * * *
 
@@ -82,28 +80,28 @@ inline void adj_iter(int& iter)
 //functions for text drawings
 void drawText(const char *text, const int& length, const int& x, const int& y, const float& text_scale )
 {
-	glMatrixMode(GL_PROJECTION); 								//Switch current matrix to PROJECTION
-	double matrix[16]; 											//Define double matrix (dim = 16)
+	glMatrixMode(GL_PROJECTION); 						//Switch current matrix to PROJECTION
+	double matrix[16]; 							//Define double matrix (dim = 16)
 	glGetDoublev(GL_PROJECTION_MATRIX, matrix); 				//Store PROJECTION matrix value into matrix (this is used for later reset)
-	glLoadIdentity(); 											//Reset PROJECTION matrix to identity matrix
-	glOrtho(0, 1500, 0, 1500, -5, 5); 							//Define orthographic perspective (left_bottom, left_up, right_bottom, right_up, v_near, v_far)
+	glLoadIdentity(); 							//Reset PROJECTION matrix to identity matrix
+	glOrtho(0, 1500, 0, 1500, -5, 5); 					//Define orthographic perspective (left_bottom, left_up, right_bottom, right_up, v_near, v_far)
 																
 
-	glMatrixMode(GL_MODELVIEW); 								//Switch current matrix to MODELVIEW
-	glLoadIdentity(); 											//Reset MODELVIEW matrix to idetity matrix
+	glMatrixMode(GL_MODELVIEW); 						//Switch current matrix to MODELVIEW
+	glLoadIdentity(); 							//Reset MODELVIEW matrix to idetity matrix
 	
-	glPushMatrix(); 											//Push matrix 
-	glTranslatef(x, y, 0);										//Translate text position to (x,y) coordinates
-    glScalef(text_scale,text_scale,1);							//Scale text dimension
+	glPushMatrix(); 							//Push matrix 
+	glTranslatef(x, y, 0);							//Translate text position to (x,y) coordinates
+    	glScalef(text_scale,text_scale,1);					//Scale text dimension
 	for(int i=0; i<length; i++)
 	{
-  		glutStrokeCharacter(GLUT_STROKE_ROMAN, (int)text[i]);	//GLUT_STROKE_ROMAN allows scaling of characters
+  		glutStrokeCharacter(GLUT_STROKE_ROMAN, (int)text[i]);		//GLUT_STROKE_ROMAN allows scaling of characters
  	}
-	glPopMatrix(); 												//Pop matrix
-	glMatrixMode(GL_PROJECTION); 								//Switch current matrix to PROJECTION
-	glLoadMatrixd(matrix); 										//Load previously saved matrix to PROJECTION matrix
-	glMatrixMode(GL_MODELVIEW); 								//Switch current matrix to MODELVIEW
-}
+	glPopMatrix(); 								//Pop matrix
+	glMatrixMode(GL_PROJECTION); 						//Switch current matrix to PROJECTION
+	glLoadMatrixd(matrix); 							//Load previously saved matrix to PROJECTION matrix
+	glMatrixMode(GL_MODELVIEW); 						//Switch current matrix to MODELVIEW
+
 
 //NOTE: this functions does not do anything particular, except assigning text value to globally defined std::string,
 //convenient for developers and cleanliness of code
@@ -111,26 +109,26 @@ void assign_text_values()
 {
 	//text for simulation parameters and titles
 	text_title 		= "GRAVITATIONAL N-BODY SIMULATION";
-	text_bodies  	= "# of Bodies:";
+	text_bodies  		= "# of Bodies:";
 	text_time 		= "Time elapsed: ";
 	text_iter 		= "Computations: ";
 
 	//text for key-informations
- 	key_F1 	= "F1: zoom out ";
- 	key_F2 	= "F2: reset ";
- 	key_F3 	= "F3: zoom in";
- 	key_F4 	= "F4: increase FPS";
- 	key_F5 	= "F5: reset FPS";
- 	key_F6 	= "F6: decrease FPS";
- 	key_UP_DOWN = "Up/Down: rotate around x-axis";
- 	key_LEFT_RIGHT = "Left/Right : rotate around z-axis";
- 	key_SPACE = "Spacebar: play/pause anim.";
- 	key_EXIT = "Esc: exit simulation";
- 	key_F11 = "F11: reverse anim.";
- 	key_F12 = "F12: restart anim. ";
- 	key_info= "(i): hide/show informations ";
- 	key_ack = "(a): display acknowledgments";
- 	key_full = "(f): full screen";
+ 	key_F1 		= "F1: zoom out ";
+ 	key_F2 		= "F2: reset ";
+ 	key_F3 		= "F3: zoom in";
+ 	key_F4 		= "F4: increase FPS";
+ 	key_F5 		= "F5: reset FPS";
+ 	key_F6 		= "F6: decrease FPS";
+ 	key_UP_DOWN 	= "Up/Down: rotate around x-axis";
+ 	key_LEFT_RIGHT 	= "Left/Right : rotate around z-axis";
+ 	key_SPACE 	= "Spacebar: play/pause anim.";
+ 	key_EXIT 	= "Esc: exit simulation";
+ 	key_F11 	= "F11: reverse anim.";
+ 	key_F12 	= "F12: restart anim. ";
+ 	key_info	= "(i): hide/show informations ";
+ 	key_ack 	= "(a): display acknowledgments";
+ 	key_full 	= "(f): full screen";
 
  	//text for acknowlegment
  	ack_name 	= "F. BORANDO, M. GARBELLINI";
@@ -144,21 +142,21 @@ void draw_key_informations_text(const float& text_scale)
  	int info_y_coord = 1000;
  	int info_y_offwidth = -40;
  		
- 		drawText(key_F1.data(), key_F1.size(), info_x_coord, info_y_coord, text_scale);
- 		drawText(key_F2.data(), key_F2.size(), info_x_coord, info_y_coord + info_y_offwidth, text_scale);
- 		drawText(key_F3.data(), key_F3.size(), info_x_coord, info_y_coord + 2*info_y_offwidth, text_scale);
- 		drawText(key_F4.data(), key_F4.size(), info_x_coord, info_y_coord + 3*info_y_offwidth, text_scale);
- 		drawText(key_F5.data(), key_F5.size(), info_x_coord, info_y_coord + 4*info_y_offwidth, text_scale);
- 		drawText(key_F6.data(), key_F6.size(), info_x_coord, info_y_coord + 5*info_y_offwidth, text_scale);	
- 		drawText(key_F11.data(), key_F11.size(), info_x_coord, info_y_coord + 6*info_y_offwidth, text_scale);
- 		drawText(key_F12.data(), key_F12.size(), info_x_coord, info_y_coord + 7*info_y_offwidth, text_scale);
- 		drawText(key_UP_DOWN.data(), key_UP_DOWN.size(), info_x_coord, info_y_coord + 8*info_y_offwidth, text_scale);
- 		drawText(key_LEFT_RIGHT.data(), key_LEFT_RIGHT.size(), info_x_coord, info_y_coord + 9*info_y_offwidth, text_scale);
- 		drawText(key_SPACE.data(), key_SPACE.size(), info_x_coord, info_y_coord + 10*info_y_offwidth, text_scale);
- 		drawText(key_EXIT.data(), key_EXIT.size(), info_x_coord, info_y_coord + 11*info_y_offwidth, text_scale);
- 		drawText(key_full.data(), key_full.size(), info_x_coord, info_y_coord + 12*info_y_offwidth, text_scale);
- 		drawText(key_ack.data(), key_ack.size(), info_x_coord, info_y_coord + 13*info_y_offwidth, text_scale);	
- 		drawText(key_info.data(), key_info.size(), info_x_coord, info_y_coord + 14*info_y_offwidth, text_scale);
+ 	drawText(key_F1.data(), key_F1.size(), info_x_coord, info_y_coord, text_scale);
+ 	drawText(key_F2.data(), key_F2.size(), info_x_coord, info_y_coord + info_y_offwidth, text_scale);
+ 	drawText(key_F3.data(), key_F3.size(), info_x_coord, info_y_coord + 2*info_y_offwidth, text_scale);
+	drawText(key_F4.data(), key_F4.size(), info_x_coord, info_y_coord + 3*info_y_offwidth, text_scale);
+ 	drawText(key_F5.data(), key_F5.size(), info_x_coord, info_y_coord + 4*info_y_offwidth, text_scale);
+ 	drawText(key_F6.data(), key_F6.size(), info_x_coord, info_y_coord + 5*info_y_offwidth, text_scale);	
+ 	drawText(key_F11.data(), key_F11.size(), info_x_coord, info_y_coord + 6*info_y_offwidth, text_scale);
+ 	drawText(key_F12.data(), key_F12.size(), info_x_coord, info_y_coord + 7*info_y_offwidth, text_scale);
+ 	drawText(key_UP_DOWN.data(), key_UP_DOWN.size(), info_x_coord, info_y_coord + 8*info_y_offwidth, text_scale);
+ 	drawText(key_LEFT_RIGHT.data(), key_LEFT_RIGHT.size(), info_x_coord, info_y_coord + 9*info_y_offwidth, text_scale);
+ 	drawText(key_SPACE.data(), key_SPACE.size(), info_x_coord, info_y_coord + 10*info_y_offwidth, text_scale);
+ 	drawText(key_EXIT.data(), key_EXIT.size(), info_x_coord, info_y_coord + 11*info_y_offwidth, text_scale);
+ 	drawText(key_full.data(), key_full.size(), info_x_coord, info_y_coord + 12*info_y_offwidth, text_scale);
+ 	drawText(key_ack.data(), key_ack.size(), info_x_coord, info_y_coord + 13*info_y_offwidth, text_scale);	
+ 	drawText(key_info.data(), key_info.size(), info_x_coord, info_y_coord + 14*info_y_offwidth, text_scale);
 }
 
 void draw_simulation_text(const float& text_scale)
@@ -356,11 +354,11 @@ void glutSpecialKeys(const int key, const int x, const int y)
 
 		case GLUT_KEY_F4:
 			FPS -= FPS_var;
-    		if(FPS<=0)
-    		{
-    			FPS = 15;
-    		}
-    		adj_iter(iter);
+    			if(FPS<=0)
+    			{
+    				FPS = 15;
+    			}
+    			adj_iter(iter);
 
 			break;
 
@@ -444,15 +442,15 @@ void glutDisplay(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			//Clears the window for drawing
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);			//Defines blending and transparency options (currently not used)
-	glEnable(GL_BLEND);											//Enables blending and transparency								
-	glEnable(GL_POINT_SMOOTH);									//Avoids aliasing problems with many-points. Smoother animation
+	glEnable(GL_BLEND);							//Enables blending and transparency								
+	glEnable(GL_POINT_SMOOTH);						//Avoids aliasing problems with many-points. Smoother animation
 
 
-	glMatrixMode(GL_PROJECTION);								//Switch to PROJECTION mode: for 3D rotations
-	glLoadIdentity();											//Loads Identity matrix at current position. 
+	glMatrixMode(GL_PROJECTION);						//Switch to PROJECTION mode: for 3D rotations
+	glLoadIdentity();							//Loads Identity matrix at current position. 
 																//futures rotations will use this as a 'starting point'
-	glRotatef(rotateX,1,0,0);									//Rotates around x-axis of rotateX degrees
-	glRotatef(rotateZ,0,1,0);									//Rotates around y-axis of rotateY degrees
+	glRotatef(rotateX,1,0,0);						//Rotates around x-axis of rotateX degrees
+	glRotatef(rotateZ,0,1,0);						//Rotates around y-axis of rotateY degrees
 
 
 	//Draw text
@@ -481,13 +479,13 @@ void glutDisplay(void)
 	{
 		for(int i=iter*N; i<N*(iter+1); i++)
         	{
-            	glut_bodies[i].glutScaleCoord(scale);			//Scales points according to 'scale' parameter. Used for zooming in and out
-            	glut_bodies[i].glutDrawPoint(point_size);		//glutDrawPoint(float point size)
+            	glut_bodies[i].glutScaleCoord(scale);				//Scales points according to 'scale' parameter. Used for zooming in and out
+            	glut_bodies[i].glutDrawPoint(point_size);			//glutDrawPoint(float point size)
             	glut_bodies[i].glutScaleCoord((float) 1/scale);
             }
 
-   		glutSwapBuffers();										//Swap buffers to current one
-    	iter++;													//Incrementation of iter counter 
+   		glutSwapBuffers();						//Swap buffers to current one
+    	iter++;									//Incrementation of iter counter 
 	}
 	else if (reverse==1)
 	{
@@ -496,11 +494,11 @@ void glutDisplay(void)
         {
         	//glut_bodies[i].glutDrawSphere();
         	glut_bodies[i].glutScaleCoord(scale);				//Scales points according to 'scale' parameter. Used for zooming in and out
-            glut_bodies[i].glutDrawPoint(point_size);			//glutDrawPoint(float point size, float alpha)
+            glut_bodies[i].glutDrawPoint(point_size);				//glutDrawPoint(float point size, float alpha)
             glut_bodies[i].glutScaleCoord((float) 1/scale);        
         }
 
-    	glutSwapBuffers();										//Swap buffers to current one
+    	glutSwapBuffers();							//Swap buffers to current one
     	iter = iter - 1;							
 	}
 }
@@ -518,23 +516,17 @@ void glutLoadVector(char* argv[])
 	while(input.good())
 	{
 		input 	>> x_coord_read 
-				>> y_coord_read 
-				>> z_coord_read;
+			>> y_coord_read 
+			>> z_coord_read;
 		
 		if(iterations < 2*N)
 		{
-			find_max(		x_coord_read, 
-							y_coord_read, 
-							z_coord_read,
-							max);
+			find_max(x_coord_read, y_coord_read, z_coord_read, max);
 		}
-		
-		body_to_push.set_glutPosition(	x_coord_read, 				//Set body position
-										y_coord_read, 
-										z_coord_read);
+		body_to_push.set_glutPosition(	x_coord_read, y_coord_read, z_coord_read);
 
-		glut_bodies.push_back(body_to_push);						//push back to glut_bodies (all bodies) vector
-		iterations++;												//iteration counter (counts body*iter)
+		glut_bodies.push_back(body_to_push);				//push back to glut_bodies (all bodies) vector
+		iterations++;							//iteration counter (counts body*iter)
 	}
 
 	for(int i=0; i<iterations; i++)
@@ -560,7 +552,7 @@ int main(int argc, char* argv[])
     if(!argv[2])
     {
     	std::cout<<"Default FPS selected: 30FPS"<<std::endl;
-        FPS = 30;												//Default framerate 30fps
+        FPS = 30;								//Default framerate 30fps
     }
    	else
    	{
@@ -574,29 +566,25 @@ int main(int argc, char* argv[])
     assign_text_values();
 
 	//OpenGL routines for setting up window
-	glutInit(&argc, argv);										//Initialize glut 
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);	//Inizialize display mode: Color:Red-Green-Blue-Alpha, Color Depth, Double-Buffering
-	glutInitWindowSize(1500,1500);								//Define window size
-	glutInitWindowPosition(0,0);								//Define window initial position
-	glutCreateWindow("Gravitational N-Body Simulation");		//Inizialize window with title
-	//glutSetColor(1.0i, 1.0f, 1.0f, 1.0f);						//Set color for drawings
+	glutInit(&argc, argv);							//Initialize glut 
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);		//Inizialize display mode: Color:Red-Green-Blue-Alpha, Color Depth, Double-Buffering
+	glutInitWindowSize(1500,1500);						//Define window size
+	glutInitWindowPosition(0,0);						//Define window initial position
+	glutCreateWindow("Gravitational N-Body Simulation");			//Inizialize window with title
+	//glutSetColor(1.0i, 1.0f, 1.0f, 1.0f);					//Set color for drawings
 
 	
-	glViewport(0,0,1500,1500);									//Set viewport for 3D graphics
-	glm::mat4 projection = glm::perspective(40.0f,				//Define perspective matrix. glm:perspective(FOV, W/H, nearest_point, furthest_point)
-											1.0f, 
-											20.0f, 
-											1000.0f);
+	glViewport(0,0,1500,1500);						//Set viewport for 3D graphics
+	glm::mat4 projection = glm::perspective(40.0f, 1.0f, 20.0f, 1000.0f); 	//Define perspective matrix. glm:perspective(FOV, W/H, nearest_point, furthest_point)
 
-	glMatrixMode(GL_PROJECTION);								//Matrix mode: projection
-	glLoadIdentity();											//Load Identity matrix for further transformations
-	glLoadMatrixf(glm::value_ptr(projection));					//New routine (OpenGL 3.0) for perspective matrix loading
+	glMatrixMode(GL_PROJECTION);						//Matrix mode: projection
+	glLoadIdentity();							//Load Identity matrix for further transformations
+	glLoadMatrixf(glm::value_ptr(projection));				//New routine (OpenGL 3.0) for perspective matrix loading
     
-    glutDisplayFunc(glutDisplay);								//Rendering function
-   																//Function for max FPS selection
-	glutKeyboardFunc(glutHandleKeyPress);						//Handles input from keyboard
-	glutSpecialFunc(glutSpecialKeys);							//Handles input from 'special_keys'
-	glutMainLoop();												//OpenGL main loop
+   	glutDisplayFunc(glutDisplay);						//Rendering function																//Function for max FPS selection
+	glutKeyboardFunc(glutHandleKeyPress);					//Handles input from keyboard
+	glutSpecialFunc(glutSpecialKeys);					//Handles input from 'special_keys'
+	glutMainLoop();								//OpenGL main loop
 
 	return 0;
 }			
