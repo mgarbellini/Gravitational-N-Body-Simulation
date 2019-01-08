@@ -5,7 +5,7 @@
 // January 2019
 //
 // GRAVITATIONAL N-BODY SIMULATION
-// Using tree method with RK algorithm
+// Using tree method with Runge-Kutta algorithm
 
 #include <iostream>
 #include <fstream>
