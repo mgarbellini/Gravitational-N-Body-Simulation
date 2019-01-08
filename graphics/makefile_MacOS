@@ -37,7 +37,7 @@ tools_%: tools_%.o ; \
 glut_%: glut_%.o ; \
 	$(CXX) -o $(@F) $(@F).o -framework OpenGL -framework GLUT $(GL) $(GLEW) $(GLM)
 %: %.cpp ; \
-        $(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@m
+        $(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 clean: ; /bin/rm -f *.o
 
