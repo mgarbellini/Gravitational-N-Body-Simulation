@@ -24,7 +24,7 @@ tools_%: tools_%.o ; \
 	$(CXX) -o $(@F) $(@F).o $(ROOT_LIBS)
 
 %: %.cpp ; \
-        $(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@m
+        $(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 clean: ; /bin/rm -f *.o
 
