@@ -1,0 +1,179 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;\f2\fnil\fcharset0 Menlo-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh15180\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 F. Borando - francesco.borando@studenti.unimi.it\
+M. Garbellini - matteo.garbellini@studenti.unimi.it\
+Universit\'e0 degli Studi di Milano
+\f1 \
+
+\f0 Dept. of Physics
+\f1 \
+
+\f0 January 2019
+\f1 \
+\
+
+\f2\b GRAVITATIONAL N-BODY SIMULATION
+\f1\b0 \
+
+\f0 \
+
+\f2\b 1. Introduction\
+2. Numerical methods\
+3. Technical remarks\
+	3.1 Softening\
+	3.2 Normalization\
+4. Package description - how to use it\
+	4.1 \'93simulators\'94 directory\
+	4.2 \'93graphics\'94 directory\
+	4.3 \'93tools\'94 directory\
+5. Requirements
+\f0\b0 \
+
+\f2\b 6. How to build the code
+\f0\b0 \
+\
+
+\f2\b 1. Introduction
+\f0\b0 \
+\
+This package provides a software that can perform different physical simulations of a three dimensional classical N-body problem, collisionless, where the N bodies interact with Newtons\'92 law of universal gravitation.\
+The code implements the algorithm firstly proposed by Barnes and Hut (1986) that reduces the complexity of force calculation to O(N log N) by using a tree-structured hierarchical division of space and approximating body clusters with a cluster-center-of-mass when a certain criterion is satisfied - \cb2 See J. Barnes & P. Hut (December 1986). "A hierarchical O(N log N) force-calculation algorithm". Nature. 324 (4): 446\'96449. \
+The package provides code of different simulators, a small package of tools for energy and data analysis and a graphical tool to visualize the results of the simulation using OpenGL.\
+\cb1 \
+
+\f2\b 2. Numerical methods
+\f0\b0 \
+\
+Computational results are obtained by different numerical methods:\
+\
+\'95 Leapfrog - O(h^3), symplectic \
+\'95 Runge-Kutta - O(h^5)\
+\
+where h is the time-increment value (or timestep). For each method a different simulator is provided.\
+The Leapfrog method was adopted in a non-standard form which preserves symplecticity and O(h^3) order - For a description of this alternative method see http://www.artcompsci.org/vol_1/v1_web/node34.html . \
+Following Bodenheim&others (December 2006),\'93Numerical methods in Astrophysics\'94 Ch.3, par.3.7 we suggest to use the Leapfrog method for a simulation concerning a vast number of bodies (>10^4). To simulate smaller systems we recommend the use of Runge-Kutta algorithm, where the computational effort can still be handled easily by modern calculators.\
+\
+
+\f2\b 3. Technical remarks
+\f0\b0 \
+\
+
+\f2\b 3.1 Softening\
+
+\f0\b0 \
+In this code the classic softening trick to avoid exaggerated force with close bodies encounters is provided - for a physical discussion see W. Dehnen (November 2000), \'93Towards optimal softening in 3D N-body codes\'94.\
+Following previous paper and by the results of our own tests the standard softening length provided in the code was chosen with an epsilon value of 0.025.\
+\
+
+\f2\b 3.2 Normalization\
+
+\f0\b0 \
+The value of the universal gravitational constant G is normalized to the value of 1, following the standard for numerical astrophysical simulations. Be aware that time units could also need to be rescaled depending on the context of the dynamical system. \
+\
+
+\f2\b 4. Package description - how to use it
+\f0\b0 \
+\
+
+\f2\b 4.1 \'93simulators\'94 directory\
+
+\f0\b0 \
+This directory provides code for both methods described in section 2 of this file.\
+A simulator that records potential and kinetic energy is also provided for both methods - it can be useful for checking how well the simulation conserved the energy.\
+The lines of the input-file (first argument for the simulators) must be of this format: \
+\
+mass_of_the_body (tab) initial_x_position (tab) initial_y_position (tab) initial_z_position (tab) initial_x_velocity (tab) initial_y_velocity (tab) initial_z_velocity\
+\
+Second and third arguments for the simulators are the timestep and the number of steps that must evaluated.\
+\
+For example, executing:  ./tree_code_leapfrog input_file_name.txt 0.01 100\
+will simulate 100 cycles of the system whose initial conditions are listed in the file \'93input_file_name.txt\'94 using leapfrog method with a timestep of 0.01. \
+\
+The results of the simulation are two output files:\
+\'95 computational results, which contains:\
+	\'95 a line indicating the number of bodies involved in the simulation and the timestep used in the simulation separated by a tab \
+	\'95 all the partial results of the simulation at each computed timestep. These lines have the following format:\
+		x_position (tab) y_position (tab) z_position\
+\'95 velocity backup: \
+	stores masses, last positions and velocities of the simulation. This file is basically a checkpoint: its format is in fact appropriate for a new input-file for the simulator.\
+\
+
+\f2\b 4.2 \'93graphics\'94 directory\
+
+\f0\b0 \
+This directory provides code to visualize a graphic simulation of the computational results obtained with the code contained in the \'93simulators\'94 directory.\
+A brief description of how to use \'93glutGraphics\'94 executable follows.\
+glutGraphics executable requires two arguments: an input-file containing results of a simulation, and the desired frame rate at which the animation runs.\
+The input file must contain: \
+\'95 a line where the number of bodies and the timestep used in the simulation are reported\
+\'95 lines composed in this format:\
+	x_position (tab) y_position (tab) z_position\
+\
+The second argument is the animation frame rate: if none is provided the animation runs at 30FPS by default. Please note that the maximum frame rate depends on the GPU, and it thus might differ from a machine to another. A frame rate in the range 24-60FPS is recommended.\
+\
+The graphics simulator is provided with several interactive options. Once glutGraphics is executed a list of commands will be displayed. These include:\
+\'95 Play/Pause\
+\'95 Zoom in/out/reset\
+\'95 Increase/decrease/reset FPS\
+\'95 Rotate around x,z axis\
+\'95 Reverse animation\
+\
+Note that some packages may be required for building and executing glutGraphics - see section 5 of this file.\
+\
+
+\f2\b 4.3 \'93tools\'94 directory\
+\
+
+\f0\b0 This directory provides some useful tools for analyzing the conservation of energy of the system.\
+The file energy_data_fixer.cpp transforms the result of a computation of the n-body problem of type
+\f1 \
+
+\f0 x_position  y_position  z_position kin_energy pot_energy
+\f1 \
+
+\f0 into new files useful for energetic analysis:
+\f1 \
+
+\f0 \'95 clean energy data for plotting
+\f1 \
+
+\f0 \'95 a "table" of percentage errors\
+\
+The files plot_errors.cpp and plot_energy.cpp can be used to produce a graph of the files obtained by energy_data_fixer.cpp.\
+Note that ROOT Cern package is required to build and execute these files - see section 5 of this file.\
+The file dispersion.cpp prints the dispersion of the energy of a file obtained via energy_data_fixer.cpp on the terminal window.
+\f2\b \
+
+\f0\b0 \
+\
+
+\f2\b 5. Requirements\
+
+\f0\b0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 glew \
+http://glew.sourceforge.net/\
+\
+freeglut\
+http://freeglut.sourceforge.net/\
+\
+OpenGL Mathematics, glm\
+https://glm.g-truc.net/0.9.9/index.html\
+\
+ROOT Cern\
+https://root.cern.ch/\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+
+\f2\b 6. How to build the code\
+
+\f0\b0 \
+Makefiles are provided in each directory. Before building make sure that all requirements are fulfilled. \
+Note that the makefiles provided could show issues with library linkage.\
+}
