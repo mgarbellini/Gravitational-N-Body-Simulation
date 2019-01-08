@@ -5,7 +5,8 @@
 // January 2019
 //
 // GRAVITATIONAL N-BODY SIMULATION
-// tree.hpp: 
+// tree.hpp: tree class for Barnes-Hut force calculation algorithm
+// 
 
 #ifndef TREE_FOR_N_BODY_SIMULATION
 #define TREE_FOR_N_BODY_SIMULATION
