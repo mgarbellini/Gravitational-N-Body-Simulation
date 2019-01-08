@@ -580,7 +580,7 @@ int main(int argc, char* argv[])
 	glLoadIdentity();							//Load Identity matrix for further transformations
 	glLoadMatrixf(glm::value_ptr(projection));				//New routine (OpenGL 3.0) for perspective matrix loading
     
-   	glutDisplayFunc(glutDisplay);						//Rendering function																//Function for max FPS selection
+   	glutDisplayFunc(glutDisplay);						//Rendering function
 	glutKeyboardFunc(glutHandleKeyPress);					//Handles input from keyboard
 	glutSpecialFunc(glutSpecialKeys);					//Handles input from 'special_keys'
 	glutMainLoop();								//OpenGL main loop
