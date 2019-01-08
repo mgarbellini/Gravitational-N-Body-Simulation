@@ -1,3 +1,13 @@
+// F. Borando - francesco.borando@studenti.unimi.it
+// M. Garbellini - matteo.garbellini@studenti.unimi.it
+// Università degli Studi di Milano
+// Dept. of Physics
+// January 2019
+//
+// GRAVITATIONAL N-BODY SIMULATION
+// tree_RK.hpp: tree class for Barnes-Hut 
+//
+
 #ifndef TREE_FOR_N_BODY_SIMULATION
 #define TREE_FOR_N_BODY_SIMULATION
 
