@@ -1,4 +1,3 @@
-Scacco matto github!
 F. Borando - francesco.borando@studenti.unimi.it
 M. Garbellini - matteo.garbellini@studenti.unimi.it
 Universita' degli Studi di Milano
@@ -16,26 +15,26 @@ GRAVITATIONAL N-BODY SIMULATION
 	4.1 'simulators' directory
 	4.2 'graphics' directory
 	4.3 'tools' directory
-	4.4 'initial conditions' directory 
+	4.4 'initial conditions' directory
 5. Requirements
 6. How to build the code
 
 
 1. INTRODUCTION
 This package provides a software that can perform different physical simulations of a three dimensional classical N-body problem, collisionless, where the N bodies interact with Newtons law of universal gravitation.
-The code implements the algorithm firstly proposed by Barnes and Hut (1986) that reduces the complexity of force calculation to O(N log N) by using a tree-structured hierarchical division of space and approximating body 
+The code implements the algorithm firstly proposed by Barnes and Hut (1986) that reduces the complexity of force calculation to O(N log N) by using a tree-structured hierarchical division of space and approximating body
 clusters with a cluster-center-of-mass when a certain criterion is satisfied -  See J. Barnes & P. Hut (December 1986). "A hierarchical O(N log N) force-calculation algorithm". Nature. 324 (4): 446'
 The package provides code of different simulators, a small package of tools for energy and data analysis and a graphical tool to visualize the results of the simulation using OpenGL.
 
 
 2. NUMERICAL METHODS
 Computational results are obtained by different numerical methods:
-	- Leapfrog - O(h^3), symplectic 
+	- Leapfrog - O(h^3), symplectic
 	- Runge-Kutta - O(h^5)
 
 where h is the time-increment value (or timestep). For each method a different simulator is provided.
-The Leapfrog method was adopted in a non-standard form which preserves symplecticity and O(h^3) order - For a description of this alternative method see http://www.artcompsci.org/vol_1/v1_web/node34.html . 
-Following Bodenheim&others (December 2006), 'Numerical methods in Astrophysics' Ch.3, par.3.7 we suggest to use the Leapfrog method for a simulation concerning a vast number of bodies (>10^4). 
+The Leapfrog method was adopted in a non-standard form which preserves symplecticity and O(h^3) order - For a description of this alternative method see http://www.artcompsci.org/vol_1/v1_web/node34.html .
+Following Bodenheim&others (December 2006), 'Numerical methods in Astrophysics' Ch.3, par.3.7 we suggest to use the Leapfrog method for a simulation concerning a vast number of bodies (>10^4).
 To simulate smaller systems we recommend the use of Runge-Kutta algorithm, where the computational effort can still be handled easily by modern calculators.
 
 
@@ -46,7 +45,7 @@ In this code the classic softening trick to avoid exaggerated force with close b
 Following previous paper and by the results of our own tests the standard softening length provided in the code was chosen with an epsilon value of 0.025.
 
 3.2 Normalization
-The value of the universal gravitational constant G is normalized to the value of 1, following the standard for numerical astrophysical simulations. Be aware that time units could also need to be rescaled depending on the context of the dynamical system. 
+The value of the universal gravitational constant G is normalized to the value of 1, following the standard for numerical astrophysical simulations. Be aware that time units could also need to be rescaled depending on the context of the dynamical system.
 
 3.3 Barnes-Hut Conditions
 According to Barnes-Hut (1986), the so called Barnes-Hut condition was set to 0.5
@@ -57,7 +56,7 @@ According to Barnes-Hut (1986), the so called Barnes-Hut condition was set to 0.
 4.1 'simulators' directory
 This directory provides code for both methods described in section 2 of this file.
 A simulator that records potential and kinetic energy is also provided for both methods - it can be useful for checking how well the simulation conserved the energy.
-The lines of the input-file (first argument for the simulators) must be of this format: 
+The lines of the input-file (first argument for the simulators) must be of this format:
 
 mass_of_the_body (tab) initial_x_position (tab) initial_y_position (tab) initial_z_position (tab) initial_x_velocity (tab) initial_y_velocity (tab) initial_z_velocity
 
@@ -68,17 +67,17 @@ will simulate 100 cycles of the system whose initial conditions are listed in th
 
 The results of the simulation are two output files:
 computational results, which contains:
-	- a line indicating the number of bodies involved in the simulation and the timestep used in the simulation separated by a tab 
+	- a line indicating the number of bodies involved in the simulation and the timestep used in the simulation separated by a tab
 	- all the partial results of the simulation at each computed timestep. These lines have the following format:
 		x_position (tab) y_position (tab) z_position
-velocity backup: 
+velocity backup:
 	- stores masses, last positions and velocities of the simulation. This file is basically a checkpoint: its format is in fact appropriate for a new input-file for the simulator.
 
 4.2 'graphics' directory
 This directory provides code to visualize a graphic simulation of the computational results obtained with the code contained in the 'simulators' directory.
 A brief description of how to use 'glutGraphics' executable follows.
 glutGraphics executable requires two arguments: an input-file containing results of a simulation, and the desired frame rate at which the animation runs.
-The input file must contain: 
+The input file must contain:
 	- a line where the number of bodies and the timestep used in the simulation are reported
 	- lines composed in this format:
 		x_position (tab) y_position (tab) z_position
@@ -91,7 +90,7 @@ The graphics simulator is provided with several interactive options. Once glutGr
 	- increase/decrease/reset FPS
 	- Rotate around x,z axis
 	- Reverse animation
-	
+
 Note that some packages may be required for building and executing glutGraphics - see section 5 of this file.
 
 4.3 'tools' directory
@@ -106,12 +105,12 @@ The files plot_errors.cpp and plot_energy.cpp can be used to produce a graph of 
 Note that ROOT Cern package is required to build and execute these files - see section 5 of this file.
 The file dispersion.cpp prints the dispersion of the energy of a file obtained via energy_data_fixer.cpp on the terminal window.
 
-4.4 'initial conditions' directory 
-In this directory some initial conditions in the proper format for the simulation are provided. 
+4.4 'initial conditions' directory
+In this directory some initial conditions in the proper format for the simulation are provided.
 
 
 5. REQUIREMENTS
-glew 
+glew
 http://glew.sourceforge.net
 
 freeglut
@@ -125,6 +124,5 @@ https://root.cern.ch
 
 
 6. HOW TO BUILD IT
-Makefiles are provided in each directory. Before building make sure that all requirements are fulfilled. 
+Makefiles are provided in each directory. Before building make sure that all requirements are fulfilled.
 Note that the makefiles provided could show issues with library linkage.
-
