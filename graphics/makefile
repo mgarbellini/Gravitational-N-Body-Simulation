@@ -5,8 +5,11 @@
 # January 2019
 # GRAVITATIONAL N-BODY SIMULATION
 #
-# Description: Rules to build the code of graphic simulation.
-# 
+# Description: Rules to build the code of graphic simulation for MacOS High Sierra (or later).
+# NOTE: with MacOS, standard library linkage might not work, and thus need to be entered manually. 
+# freeglut, glm and glew library paths might differ, please verify that before building and update
+# GL, GLEW, GLM definitions (see below).
+# also rename makefile_MacOS to makefile
 
 CXX := g++
 
@@ -16,7 +19,13 @@ CXXFLAGS := $(CXXFLAGS) $(shell root-config --cflags)
 
 ROOT_LIBS := $(shell root-config --libs)
 
-GL_LIBS := $(-framework OpenGL -framework GLUT -lglew -lglut)
+#freeglut.h
+GL := $(-I/usr/local/Cellar/freeglut/3.0.0/include)
+#glew.h
+GLEW := $(-I/usr/local/Cellar/glew/2.1.0/include)
+#glm.h
+GLM := $(I/usr/local/Cellar/glm/0.9.9.3/include)
+
 
 all: $(EXECUTABLES)
 tree_code_%: tree_code_%.o \
@@ -26,8 +35,7 @@ tools_%: tools_%.o ; \
 	$(CXX) -o $(@F) $(@F).o $(ROOT_LIBS)
 
 glut_%: glut_%.o ; \
-	$(CXX) -o $(@F) $(@F).o $(ROOT_LIBS)
-
+	$(CXX) -o $(@F) $(@F).o -framework OpenGL -framework GLUT $(GL) $(GLEW) $(GLM)
 %: %.cpp ; \
         $(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
