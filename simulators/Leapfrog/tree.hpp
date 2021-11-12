@@ -418,7 +418,7 @@ void oct_tree<DT>::insert_in_tree(body<DT>& body_to_insert, std::shared_ptr< nod
     }
     if(update_CoM_flag==true)
     {
-        //adds to parents node-mass, so it starts with the newborn leaf
+        //if node is not a newborn, need to update total mass and CoM (false only for back reassestment)
         update_node_masses(inspected_node->children[node_case], body_to_insert.get_mass());
         update_CoM(inspected_node->children[node_case]);
     }
