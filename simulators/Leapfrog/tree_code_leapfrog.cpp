@@ -106,11 +106,12 @@ main(int argc, char* argv[])
     
     while ( t < iteration_num*timestep )
     {
-        space_width = get_space_width(all_bodies_vector);
-        oct_tree<double> m_tree(all_bodies_vector, space_width);
+        space_width = get_space_width(all_bodies_vector); // variable space width (recalculated at every iteration)
+        oct_tree<double> m_tree(all_bodies_vector, space_width); // tree reconstructed from scratch at every iteration
         
         m_tree.evolve(timestep, all_bodies_vector);
         
+        // save positions and velocities in output file
         if(log_count!=iteration_num-1)
         {
             for(std::vector< body<double> >::const_iterator it = all_bodies_vector.begin(); it != all_bodies_vector.end(); ++it)
